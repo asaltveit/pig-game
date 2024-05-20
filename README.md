@@ -4,11 +4,15 @@ This is a TypeScript React Phaser game where you play as a super-powered pig def
 
 The game is based off a Phaser Vite TypeScript template.
 
+## How To Play
+
+Use right arrow key to move right, left arrow key to move left, and up arrow key to jump.
+
 ## Requirements
 
 [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
 
-## Available Commands in pig-game/pig-game
+## Available Commands
 
 | Command | Description |
 |---------|-------------|
