@@ -1,3 +1,4 @@
+import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
 
 export class Game extends Scene
@@ -7,7 +8,7 @@ export class Game extends Scene
     player: Phaser.Physics.Arcade.Sprite;
     snatcher: Phaser.Physics.Arcade.Sprite;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
-    //camera: Phaser.Cameras.Scene2D.Camera;
+    camera: Phaser.Cameras.Scene2D.Camera;
     //background: Phaser.GameObjects.Image;
     //msg_text : Phaser.GameObjects.Text;
 
@@ -22,6 +23,8 @@ export class Game extends Scene
 
     create ()
     {
+        this.camera = this.cameras.main;
+        
         // TODO Can probably be made singular
         this.platforms = this.physics.add.staticGroup();
         // Add ground
@@ -46,6 +49,8 @@ export class Game extends Scene
        // Snatcher waits, and then moves towards the right
        this.time.delayedCall(2000, this.sendSnatcher, undefined, this);
 
+       EventBus.emit('current-scene-ready', this);
+
     }
 
     update() {
@@ -67,5 +72,9 @@ export class Game extends Scene
             {
                 this.player.setVelocityY(-300);
             }
+    }
+    changeScene ()
+    {
+        this.scene.start('GameOver');
     }
 }
