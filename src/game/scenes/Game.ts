@@ -9,6 +9,8 @@ export class Game extends Scene
     snatcher: Phaser.Physics.Arcade.Sprite;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     camera: Phaser.Cameras.Scene2D.Camera;
+    // Whether to disable right and left keys for player
+    isPlayerWalkable: Boolean; 
     //background: Phaser.GameObjects.Image;
     //msg_text : Phaser.GameObjects.Text;
 
@@ -25,16 +27,19 @@ export class Game extends Scene
     {
         this.camera = this.cameras.main;
         
-        // TODO Can probably be made singular
+        // TODO should it be made singular?
         this.platforms = this.physics.add.staticGroup();
         // Add ground
         this.platforms.create(0, 768, 'ground').setTintFill(0x8000).setDisplaySize(2048, 200).refreshBody(); // .setScale(4)
+
+        // TODO Add something to background to signify you die if you go that way
 
         // Pig player starts on right side of screen
         this.player = this.physics.add.sprite(900, 600, 'dude').setTintFill(0xFFC0CB);
         this.player.setBounce(0.2);
         // Pig player can't walk off the screen
         this.player.setCollideWorldBounds(true);
+        this.isPlayerWalkable = true;
 
          // Snatcher starts on left side of screen
        this.snatcher = this.physics.add.sprite(0, 600, 'dude').setTintFill(0x000000)//.setDisplaySize(10, 200);
@@ -45,21 +50,22 @@ export class Game extends Scene
         // Snatcher doesn't fall through the floor
         this.physics.add.collider(this.snatcher, this.platforms);
        // Snatcher stops when it collides with pig
-       this.physics.add.collider(this.snatcher, this.player);
+       this.physics.add.collider(this.snatcher, this.player, () => this.snatcherCollidesPlayer());
        // Snatcher waits, and then moves towards the right
        this.time.delayedCall(2000, this.sendSnatcher, undefined, this);
 
+       // Affects React button on right side of screen
        EventBus.emit('current-scene-ready', this);
 
     }
 
     update() {
         this.cursors = this.input.keyboard?.createCursorKeys();
-        if (this.cursors?.left.isDown)
+        if (this.cursors?.left.isDown && this.isPlayerWalkable)
             {
                 this.player.setVelocityX(-160);
             }
-            else if (this.cursors?.right.isDown)
+            else if (this.cursors?.right.isDown && this.isPlayerWalkable)
             {
                 this.player.setVelocityX(160);
             }
@@ -68,11 +74,44 @@ export class Game extends Scene
                 this.player.setVelocityX(0);
             }
             
-            if (this.cursors?.up.isDown && this?.player?.body?.touching.down)
+            if (this.cursors?.up.isDown) // && this?.player?.body?.touching.down
             {
                 this.player.setVelocityY(-300);
+                this.isPlayerWalkable = true;
             }
+            this.snatcherDirection()
     }
+
+    snatcherCollidesPlayer () {
+        this.isPlayerWalkable = false;
+        this.snatcher.setVelocityX(-40);
+        // Snatcher tries to carry pig away
+        // TODO Need to get the player on top of the snatcher
+        this.player.setVelocityX(-40);
+    }
+
+    snatcherDirection () {
+        // Snatcher doesn't jump for now
+        const snatcherX = this.snatcher.x;
+        const playerX = this.player.x;
+
+        // If player is to the right
+        if (playerX > snatcherX && this.isPlayerWalkable) {
+            this.snatcher.setVelocityX(40); // speed up to 100?
+        } 
+        // If player is to the left
+        else if (playerX < snatcherX) {
+            this.snatcher.setVelocityX(-40);
+        }
+
+        else { // Snatcher doesn't jump, so pig is on top of snatcher
+            // SOmething wrong here
+            this.snatcher.setVelocityX(-40);
+            // Snatcher tries to carry pig away
+            this.player.setVelocityX(-40);
+        }
+    }
+    
     changeScene ()
     {
         this.scene.start('GameOver');
