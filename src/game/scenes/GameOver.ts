@@ -34,7 +34,7 @@ export class GameOver extends Scene
             align: 'center'
         }).setOrigin(0.5).setDepth(100).setInteractive().on('pointerdown', () => this.changeScene('Game') );
 
-        this.mainMenuButton = this.add.text(512, 460, 'Main Menu', {
+        this.mainMenuButton = this.add.text(512, 510, 'Main Menu', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'

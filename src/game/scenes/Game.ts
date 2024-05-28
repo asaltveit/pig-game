@@ -25,7 +25,12 @@ export class Game extends Scene
 
     create ()
     {
+        // TODO figure out what to do with cameras
         this.camera = this.cameras.main;
+
+        // right, top, bottom edges are collided, left is checked against
+        // Hopefully
+        this.physics.world.setBounds(0, 0, 1024, 768, true, true, true, true);
         
         // TODO should it be made singular?
         this.platforms = this.physics.add.staticGroup();
@@ -41,9 +46,9 @@ export class Game extends Scene
         this.player.setCollideWorldBounds(true);
         this.isPlayerWalkable = true;
 
-         // Snatcher starts on left side of screen
-       this.snatcher = this.physics.add.sprite(0, 600, 'dude').setTintFill(0x000000)//.setDisplaySize(10, 200);
-       this.snatcher.setCollideWorldBounds(true);
+        // Snatcher starts on left side of screen
+        this.snatcher = this.physics.add.sprite(0, 600, 'dude').setTintFill(0x000000)//.setDisplaySize(10, 200);
+        this.snatcher.setCollideWorldBounds(true);
 
         // Pig sits on the ground
         this.physics.add.collider(this.player, this.platforms);
@@ -60,6 +65,10 @@ export class Game extends Scene
     }
 
     update() {
+        if (this.player.x < 50) {
+            this.changeScene();
+        }
+
         this.cursors = this.input.keyboard?.createCursorKeys();
         if (this.cursors?.left.isDown && this.isPlayerWalkable)
             {
@@ -86,7 +95,7 @@ export class Game extends Scene
         this.isPlayerWalkable = false;
         this.snatcher.setVelocityX(-40);
         // Snatcher tries to carry pig away
-        // TODO Need to get the player on top of the snatcher
+        // TODO Need to get the player on top of the snatcher?
         this.player.setVelocityX(-40);
     }
 
@@ -104,8 +113,7 @@ export class Game extends Scene
             this.snatcher.setVelocityX(-40);
         }
 
-        else { // Snatcher doesn't jump, so pig is on top of snatcher
-            // SOmething wrong here
+        else {
             this.snatcher.setVelocityX(-40);
             // Snatcher tries to carry pig away
             this.player.setVelocityX(-40);
