@@ -33,27 +33,27 @@ export class MainMenu extends Scene
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
-        }).setOrigin(0.5).setDepth(100).setInteractive().on('pointerdown', () => this.changeScene('Game') );
+        }).setOrigin(0.5).setDepth(100).setInteractive().on('pointerdown', () => this.scene.start('Game') );
 
         this.selectLevelButton = this.add.text(512, 510, 'Select Level', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
-        }).setOrigin(0.5).setDepth(100).setInteractive().on('pointerdown', () => this.changeScene('SelectLevel') );
+        }).setOrigin(0.5).setDepth(100).setInteractive().on('pointerdown', () => this.scene.start('SelectLevel') );
 
         EventBus.emit('current-scene-ready', this);
     }
     
-    changeScene (scene: string)
+    /*changeScene (scene: string)
     {
         /*if (this.logoTween)
         {
             this.logoTween.stop();
             this.logoTween = null;
-        }*/
+        }
 
         this.scene.start(scene);
-    }
+    }*/
 
     moveLogo (vueCallback: ({ x, y }: { x: number, y: number }) => void)
     {

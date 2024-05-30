@@ -1,5 +1,7 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
+import Player from '../sprites/Player';
+import Snatcher from '../sprites/Snatcher';
 
 export class Game extends Scene
 {
@@ -29,7 +31,7 @@ export class Game extends Scene
         this.camera = this.cameras.main;
 
         // right, top, bottom edges are collided, left is checked against
-        // Hopefully
+        // Hopefully -> not working
         this.physics.world.setBounds(0, 0, 1024, 768, true, true, true, true);
         
         // TODO should it be made singular?
@@ -40,15 +42,11 @@ export class Game extends Scene
         // TODO Add something to background to signify you die if you go that way
 
         // Pig player starts on right side of screen
-        this.player = this.physics.add.sprite(900, 600, 'dude').setTintFill(0xFFC0CB);
-        this.player.setBounce(0.2);
-        // Pig player can't walk off the screen
-        this.player.setCollideWorldBounds(true);
+        this.player = this.physics.add.existing(new Player(this, 900, 600));
         this.isPlayerWalkable = true;
 
         // Snatcher starts on left side of screen
-        this.snatcher = this.physics.add.sprite(0, 600, 'dude').setTintFill(0x000000)//.setDisplaySize(10, 200);
-        this.snatcher.setCollideWorldBounds(true);
+        this.snatcher = this.physics.add.existing(new Snatcher(this, 100, 600)); //.setDisplaySize(10, 200);
 
         // Pig sits on the ground
         this.physics.add.collider(this.player, this.platforms);
@@ -65,6 +63,24 @@ export class Game extends Scene
     }
 
     update() {
+        // TODO connect pig to snatcher so that 
+        // multiple cases end game and look better?
+
+        /*
+        player:
+            connectedSnatcher
+            isWalkable if !connectedSnatcher
+            connectedSnatcher = null if "player jumps"
+            connectSnatcher(snatcher) -> the snatcher could call this on the player?
+            Can a snatcher access the player's velocity?
+            should I add the platforms to set bounds on?
+            Includes what it looks like
+
+
+        */
+
+
+
         if (this.player.x < 50) {
             this.changeScene();
         }
