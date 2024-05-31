@@ -11,6 +11,9 @@ export class Game extends DayLevel {
     */
     // Newly declared vars
     snatcher: Phaser.Physics.Arcade.Sprite;
+    dayCloudsBack: Phaser.GameObjects.TileSprite;
+    dayCloudsMid1: Phaser.GameObjects.TileSprite;
+    dayCloudsMid2: Phaser.GameObjects.TileSprite;
 
     /* Inherited vars
     floor: Phaser.Physics.Arcade.StaticGroup;
@@ -30,7 +33,11 @@ export class Game extends DayLevel {
     {
         // TODO figure out what to do with cameras
         this.camera = this.cameras.main;
-        this.physics.world.setBounds(0, 0, 1024, 768, true, true, true, true);
+        //this.physics.world.setBounds(0, 0, 1024, 768, true, true, true, true);
+
+        let { width, height } = this.sys.game.canvas;
+        this.createBackground(width, height);
+
         // TODO Can probably be made singular?
         this.floor = this.physics.add.staticGroup();
         // Add ground
@@ -57,6 +64,10 @@ export class Game extends DayLevel {
     }
 
     update() {
+        this.dayCloudsBack.tilePositionX -= 0.05; // 0.05
+        this.dayCloudsMid1.tilePositionX -= 0.15; // 0.3
+        this.dayCloudsMid2.tilePositionX -= 0.4; // 0.75
+
         if (this.player.x < 50) {
             this.scene.start('GameOver');
         }
@@ -117,4 +128,27 @@ export class Game extends DayLevel {
     sendSnatcher () {
         this.snatcher.setVelocityX(40);
     }  
+
+    createBackground (width: number, height: number) {
+        this.dayCloudsBack = this.add.tileSprite(0,
+            height - this.textures.get('day-clouds-back').getSourceImage().height - 100,
+            width,
+            this.textures.get('day-clouds-back').getSourceImage().height,
+            'day-clouds-back'
+        ).setScale(3);
+
+        this.dayCloudsMid1 = this.add.tileSprite(0,
+            height - this.textures.get('day-clouds-mid1').getSourceImage().height - 100,
+            width,
+            this.textures.get('day-clouds-mid1').getSourceImage().height,
+            'day-clouds-mid1'
+        ).setScale(2);
+
+        this.dayCloudsMid2 = this.add.tileSprite(0,
+            height - this.textures.get('day-clouds-mid2').getSourceImage().height - 100,
+            width,
+            this.textures.get('day-clouds-mid2').getSourceImage().height,
+            'day-clouds-mid2'
+        ).setScale(2);
+    }
 }

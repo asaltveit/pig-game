@@ -28,7 +28,7 @@ const config: Phaser.Types.Core.GameConfig = {
         Preloader,
         MainMenu,
         SelectLevel,
-        MainGame,//DayLevel,
+        MainGame,
         GameOver
     ]
 };
