@@ -1,8 +1,9 @@
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    
-    isPlayerWalkable: boolean; // might want to do soomething with this?
     // Perhaps still want to attach a snatcher?
+
+    // Could allow player to name their pig, 
+    // need to protect against bad names?
     
     constructor (scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'pig');
@@ -17,6 +18,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         /*
             Perhaps aliens could offer different weapon choices, 
             which determines difficulty and success
+
+            player:
+            connectedSnatcher
+            isWalkable if !connectedSnatcher
+            connectedSnatcher = null if "player jumps"
+            connectSnatcher(snatcher) -> the snatcher could call this on the player?
+            Can a snatcher access the player's velocity?
+            should I add the platforms to set bounds on?
+            Includes what it looks like
+
+
         */
     }
 }

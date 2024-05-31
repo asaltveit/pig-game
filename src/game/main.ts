@@ -6,6 +6,8 @@ import { MainMenu } from './scenes/MainMenu';
 import { AUTO, Game } from 'phaser';
 import { Preloader } from './scenes/Preloader';
 
+//const MainGame = new DayLevel('Game');
+
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config: Phaser.Types.Core.GameConfig = {
@@ -26,7 +28,7 @@ const config: Phaser.Types.Core.GameConfig = {
         Preloader,
         MainMenu,
         SelectLevel,
-        MainGame,
+        MainGame,//DayLevel,
         GameOver
     ]
 };

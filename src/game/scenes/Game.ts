@@ -1,90 +1,70 @@
-import { EventBus } from '../EventBus';
-import { Scene } from 'phaser';
 import Player from '../sprites/Player';
 import Snatcher from '../sprites/Snatcher';
+import DayLevel from './DayLevel';
 
-export class Game extends Scene
-{
+// TODO Game will become Level_1 in the future
+export class Game extends DayLevel {
+    /* 
+        How much does it really help to have the vars defined beforehand?
+        Would the preload() work?
     
-    platforms: Phaser.Physics.Arcade.StaticGroup;
-    player: Phaser.Physics.Arcade.Sprite;
+    */
+    // Newly declared vars
     snatcher: Phaser.Physics.Arcade.Sprite;
-    cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
+
+    /* Inherited vars
+    floor: Phaser.Physics.Arcade.StaticGroup;
     camera: Phaser.Cameras.Scene2D.Camera;
-    // Whether to disable right and left keys for player
+    player: Phaser.Physics.Arcade.Sprite;
+    cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     isPlayerWalkable: Boolean; 
-    //background: Phaser.GameObjects.Image;
-    //msg_text : Phaser.GameObjects.Text;
+    background: Phaser.GameObjects.Image;
+    */
 
     constructor ()
     {
         super('Game');
     }
 
-    sendSnatcher () {
-        this.snatcher.setVelocityX(40);
-    } 
-
     create ()
     {
         // TODO figure out what to do with cameras
         this.camera = this.cameras.main;
-
-        // right, top, bottom edges are collided, left is checked against
-        // Hopefully -> not working
         this.physics.world.setBounds(0, 0, 1024, 768, true, true, true, true);
-        
-        // TODO should it be made singular?
-        this.platforms = this.physics.add.staticGroup();
+        // TODO Can probably be made singular?
+        this.floor = this.physics.add.staticGroup();
         // Add ground
-        this.platforms.create(0, 768, 'ground').setTintFill(0x8000).setDisplaySize(2048, 200).refreshBody(); // .setScale(4)
-
+        this.floor.create(0, 768, 'ground').setTintFill(0x8000).setDisplaySize(2048, 200).refreshBody();
+        
         // TODO Add something to background to signify you die if you go that way
 
         // Pig player starts on right side of screen
         this.player = this.physics.add.existing(new Player(this, 900, 600));
         this.isPlayerWalkable = true;
 
-        // Snatcher starts on left side of screen
-        this.snatcher = this.physics.add.existing(new Snatcher(this, 100, 600)); //.setDisplaySize(10, 200);
-
         // Pig sits on the ground
-        this.physics.add.collider(this.player, this.platforms);
+        this.physics.add.collider(this.player, this.floor);
+
+        // Snatcher starts on left side of screen
+        this.snatcher = this.physics.add.existing(new Snatcher(this, 50, 600)); //.setDisplaySize(10, 200);
+
         // Snatcher doesn't fall through the floor
-        this.physics.add.collider(this.snatcher, this.platforms);
-       // Snatcher stops when it collides with pig
-       this.physics.add.collider(this.snatcher, this.player, () => this.snatcherCollidesPlayer());
-       // Snatcher waits, and then moves towards the right
-       this.time.delayedCall(2000, this.sendSnatcher, undefined, this);
-
-       // Affects React button on right side of screen
-       EventBus.emit('current-scene-ready', this);
-
+        this.physics.add.collider(this.snatcher, this.floor);
+        // Snatcher stops when it collides with pig
+        this.physics.add.collider(this.snatcher, this.player, () => this.snatcherCollidesPlayer());
+        // Snatcher waits, and then moves towards the right
+        this.time.delayedCall(2000, this.sendSnatcher, undefined, this);
     }
 
     update() {
-        // TODO connect pig to snatcher so that 
-        // multiple cases end game and look better?
-
-        /*
-        player:
-            connectedSnatcher
-            isWalkable if !connectedSnatcher
-            connectedSnatcher = null if "player jumps"
-            connectSnatcher(snatcher) -> the snatcher could call this on the player?
-            Can a snatcher access the player's velocity?
-            should I add the platforms to set bounds on?
-            Includes what it looks like
-
-
-        */
-
-
-
         if (this.player.x < 50) {
-            this.changeScene();
+            this.scene.start('GameOver');
         }
+        this.playerDirection();
+        this.snatcherDirection();
+    }
 
+    playerDirection () {
         this.cursors = this.input.keyboard?.createCursorKeys();
         if (this.cursors?.left.isDown && this.isPlayerWalkable)
             {
@@ -104,7 +84,6 @@ export class Game extends Scene
                 this.player.setVelocityY(-300);
                 this.isPlayerWalkable = true;
             }
-            this.snatcherDirection()
     }
 
     snatcherCollidesPlayer () {
@@ -128,16 +107,14 @@ export class Game extends Scene
         else if (playerX < snatcherX) {
             this.snatcher.setVelocityX(-40);
         }
-
         else {
             this.snatcher.setVelocityX(-40);
             // Snatcher tries to carry pig away
             this.player.setVelocityX(-40);
         }
     }
-    
-    changeScene ()
-    {
-        this.scene.start('GameOver');
-    }
+
+    sendSnatcher () {
+        this.snatcher.setVelocityX(40);
+    }  
 }
