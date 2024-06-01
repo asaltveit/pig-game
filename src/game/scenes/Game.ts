@@ -11,6 +11,7 @@ export class Game extends DayLevel {
     */
     // Newly declared vars
     snatcher: Phaser.Physics.Arcade.Sprite;
+    // TODO background object/individual backgrounds objects
     dayCloudsBack: Phaser.GameObjects.TileSprite;
     dayCloudsMid1: Phaser.GameObjects.TileSprite;
     dayCloudsMid2: Phaser.GameObjects.TileSprite;
@@ -33,7 +34,7 @@ export class Game extends DayLevel {
     {
         // TODO figure out what to do with cameras
         this.camera = this.cameras.main;
-        //this.physics.world.setBounds(0, 0, 1024, 768, true, true, true, true);
+        this.physics.world.setBounds(0, 0, 1024, 768, false, true, true, true);
 
         let { width, height } = this.sys.game.canvas;
         this.createBackground(width, height);
@@ -68,7 +69,7 @@ export class Game extends DayLevel {
         this.dayCloudsMid1.tilePositionX -= 0.15; // 0.3
         this.dayCloudsMid2.tilePositionX -= 0.4; // 0.75
 
-        if (this.player.x < 50) {
+        if (this.player.x < 0) {
             this.scene.start('GameOver');
         }
         this.playerDirection();
@@ -90,7 +91,7 @@ export class Game extends DayLevel {
                 this.player.setVelocityX(0);
             }
             
-            if (this.cursors?.up.isDown) // && this?.player?.body?.touching.down
+            if (this.cursors?.up.isDown && this?.player?.body?.touching.down)
             {
                 this.player.setVelocityY(-300);
                 this.isPlayerWalkable = true;
@@ -101,7 +102,6 @@ export class Game extends DayLevel {
         this.isPlayerWalkable = false;
         this.snatcher.setVelocityX(-40);
         // Snatcher tries to carry pig away
-        // TODO Need to get the player on top of the snatcher?
         this.player.setVelocityX(-40);
     }
 
@@ -129,6 +129,7 @@ export class Game extends DayLevel {
         this.snatcher.setVelocityX(40);
     }  
 
+    // TODO Figure out an object for this
     createBackground (width: number, height: number) {
         this.dayCloudsBack = this.add.tileSprite(0,
             height - this.textures.get('day-clouds-back').getSourceImage().height - 100,
