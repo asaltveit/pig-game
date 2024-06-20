@@ -54,7 +54,7 @@ export class Game extends DayLevel {
         this.physics.add.collider(this.player, this.floor);
 
         // Snatcher starts on left side of screen
-        this.snatcher = this.physics.add.existing(new Snatcher(this, 50, 600)); //.setDisplaySize(10, 200);
+        this.snatcher = this.physics.add.existing(new Snatcher(this, 50, 550)); //.setDisplaySize(10, 200);
 
         // Snatcher doesn't fall through the floor
         this.physics.add.collider(this.snatcher, this.floor);
@@ -88,22 +88,23 @@ export class Game extends DayLevel {
             }
             else
             {
-                this.player.setVelocityX(0);
                 this.player.play('right');
+                this.player.setVelocityX(0);
             }
             
-            if (this.cursors?.up.isDown && this?.player?.body?.touching.down)
+            if (this.cursors?.up.isDown) // && this?.player?.body?.touching.down
             {
-                this.player.setVelocityY(-300);
+                // TODO: Pig doesn't get away unless lucky on a corner of snatcher
+                // Pig can get away if double jump allowed
                 this.isPlayerWalkable = true;
+                // Could allow double jump if it looks more like jumping
+                this.player.setVelocityY(-300);
+                
             }
     }
 
     snatcherCollidesPlayer () {
         this.isPlayerWalkable = false;
-        this.snatcher.setVelocityX(-40);
-        // Snatcher tries to carry pig away
-        this.player.setVelocityX(-40);
     }
 
     snatcherDirection () {
@@ -113,6 +114,7 @@ export class Game extends DayLevel {
 
         // If player is to the right
         if (playerX > snatcherX && this.isPlayerWalkable) {
+            this.snatcher.play('walk');
             this.snatcher.setVelocityX(40); // speed up to 100?
         } 
         // If player is to the left
