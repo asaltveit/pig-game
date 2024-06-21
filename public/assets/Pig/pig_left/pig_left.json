@@ -1,0 +1,61 @@
+{
+	"textures": [
+		{
+			"image": "pig_left",
+			"format": "RGBA8888",
+			"size": {
+				"w": 916,
+				"h": 268
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "output-onlinepngtools-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1000,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 309,
+						"y": 86,
+						"w": 463,
+						"h": 260
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 463,
+						"h": 260
+					}
+				},
+				{
+					"filename": "output-onlinepngtools.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1000,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 302,
+						"y": 86,
+						"w": 453,
+						"h": 268
+					},
+					"frame": {
+						"x": 463,
+						"y": 0,
+						"w": 453,
+						"h": 268
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

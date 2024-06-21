@@ -6,7 +6,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // need to protect against bad names?
     
     constructor (scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 'pig', 'Pig.psd-2.png');
+        super(scene, x, y, 'pig-right', 'Pig.psd-2.png');
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -17,8 +17,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: 'right',
             frames: [
-                { key: 'pig', frame: 'Pig.psd-2.png' },
-                { key: 'pig', frame: 'Pig.psd.png' },
+                { key: 'pig-right', frame: 'Pig.psd-2.png' },
+                { key: 'pig-right', frame: 'Pig.psd.png' },
+                
+            ],
+            frameRate: 4,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'left',
+            frames: [
+                { key: 'pig-left', frame: 'output-onlinepngtools.png' },
+                { key: 'pig-left', frame: 'output-onlinepngtools-2.png' },
+                
             ],
             frameRate: 4,
             repeat: -1

@@ -80,15 +80,18 @@ export class Game extends DayLevel {
         this.cursors = this.input.keyboard?.createCursorKeys();
         if (this.cursors?.left.isDown && this.isPlayerWalkable)
             {
+                this.player.play('left', true);
+                
                 this.player.setVelocityX(-160);
             }
             else if (this.cursors?.right.isDown && this.isPlayerWalkable)
             {
+                this.player.play('right', true);
                 this.player.setVelocityX(160);
             }
             else
             {
-                this.player.play('right');
+                this.player.stop();
                 this.player.setVelocityX(0);
             }
             
@@ -129,6 +132,7 @@ export class Game extends DayLevel {
     }
 
     sendSnatcher () {
+        this.snatcher.play('walk');
         this.snatcher.setVelocityX(40);
     }  
 
