@@ -42,7 +42,7 @@ export class Preloader extends Scene
         this.load.atlas('pig-right', 'Pig/pig_right/pig_sprite.png', 'Pig/pig_right/pig_sprite.json');
         this.load.atlas('pig-left', 'Pig/pig_left/pig_left.png', 'Pig/pig_left/pig_left.json');
 
-        //this.load.spritesheet('skeleton-idle', 'Skeleton/Skeleton Idle.png', { frameWidth: 20, frameHeight: 16 });
+        //this.load.spritesheet('skeleton-idle', 'Skeleton/Skeleton Idle.png', { frameWidth: 20, frameHeight: 16 }); // 25?, 37
         this.load.spritesheet('skeleton-walk', 'Skeleton/Skeleton Walk.png', { frameWidth: 22, frameHeight: 33 });
     }
 

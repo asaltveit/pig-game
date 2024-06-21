@@ -81,11 +81,11 @@ export class Game extends DayLevel {
         if (this.cursors?.left.isDown && this.isPlayerWalkable)
             {
                 this.player.play('left', true);
-                
                 this.player.setVelocityX(-160);
             }
             else if (this.cursors?.right.isDown && this.isPlayerWalkable)
             {
+                //this.player.goRight(); // change hitbox
                 this.player.play('right', true);
                 this.player.setVelocityX(160);
             }
@@ -117,7 +117,7 @@ export class Game extends DayLevel {
 
         // If player is to the right
         if (playerX > snatcherX && this.isPlayerWalkable) {
-            this.snatcher.play('walk');
+            this.snatcher.play('walk', true);
             this.snatcher.setVelocityX(40); // speed up to 100?
         } 
         // If player is to the left
@@ -132,7 +132,7 @@ export class Game extends DayLevel {
     }
 
     sendSnatcher () {
-        this.snatcher.play('walk');
+        this.snatcher.play('walk', true);
         this.snatcher.setVelocityX(40);
     }  
 

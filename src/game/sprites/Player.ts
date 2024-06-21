@@ -11,8 +11,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         
-        this.setScale(0.5);
-        this.setSize(350, 200).setOffset(250, 130);
+        this.setScale(0.3);
+        this.setSize(350, 200).setOffset(250, 130); //only works to the right
+        //this.setSize(350, 200).setOffset(400, 130);
 
         this.anims.create({
             key: 'right',
@@ -60,5 +61,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 
         */
+    }
+
+    goLeft () {
+        this.setOffset(400, 130);
+    }
+
+    goRight () {
+        this.setSize(350, 200).setOffset(250, 130);
     }
 }

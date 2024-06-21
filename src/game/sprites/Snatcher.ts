@@ -9,10 +9,10 @@ export default class Snatcher extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         //this.setTintFill(0x000000);
-        this.setScale(2);
+        this.setScale(3);
         this.setPosition(x, y);
         // Hitbox
-        this.setSize(30, 28);
+        this.setSize(25, 28);
         this.setCollideWorldBounds(true);
         // Could add health and a method to affect it
         // Could add an attachable weapon
