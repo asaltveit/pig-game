@@ -1,6 +1,7 @@
 import Player from '../sprites/Player';
 import Snatcher from '../sprites/Snatcher';
 import DayLevel from './DayLevel';
+import { EndStates } from './GameOver';
 
 // TODO Game will become Level_1 in the future
 export class Game extends DayLevel {
@@ -79,7 +80,7 @@ export class Game extends DayLevel {
         this.dayCloudsMid2.tilePositionX -= 0.4; // 0.75
 
         if (this.player.x < -10) { // Put all end states here?
-            this.scene.start('GameOver');
+            this.scene.start('GameOver', {endState: EndStates.PlayerCapture});
         }
 
         this.playerDirection();
@@ -124,8 +125,8 @@ export class Game extends DayLevel {
             
             this.snatcherBounceBack();
 
-            if (this.pigLives < 0) {
-                this.scene.start('GameOver');
+            if (this.pigLives < 1) {
+                this.scene.start('GameOver', {endState: EndStates.PlayerDeath});
             }
         }
     }
