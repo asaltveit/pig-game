@@ -57,7 +57,7 @@ export class Game extends DayLevel {
         // TODO Add something to background to signify you die if you go that way
 
         // Pig player starts on right side of screen
-        this.player = this.physics.add.existing(new Player(this, 400, 550));
+        this.player = this.physics.add.existing(new Player(this, 900, 550));
         this.isPlayerWalkable = true;
 
         // Pig sits on the ground

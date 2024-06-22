@@ -6,7 +6,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // need to protect against bad names?
     
     constructor (scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 'pig-right', 'Pig.psd-2.png');
+        super(scene, x, y, 'pig-left', 'output-onlinepngtools.png');
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
