@@ -2,8 +2,6 @@ import Player from '../sprites/Player';
 import Snatcher from '../sprites/Snatcher';
 import DayLevel from './DayLevel';
 
-export type ColorValueHex = `#${string}`;
-
 // TODO Game will become Level_1 in the future
 export class Game extends DayLevel {
     /* 
@@ -17,6 +15,9 @@ export class Game extends DayLevel {
     dayCloudsBack: Phaser.GameObjects.TileSprite;
     dayCloudsMid1: Phaser.GameObjects.TileSprite;
     dayCloudsMid2: Phaser.GameObjects.TileSprite;
+    
+    pigLives: number;
+    pigHealthText: Phaser.GameObjects.Text;
 
     /* Inherited vars
     floor: Phaser.Physics.Arcade.StaticGroup;
@@ -36,12 +37,18 @@ export class Game extends DayLevel {
     {
         // TODO figure out what to do with cameras
         this.camera = this.cameras.main;
+        
+        // Left bound is not concrete, rest are
         this.physics.world.setBounds(0, 0, 1024, 768, false, true, true, true);
 
+        // Adds moving clouds background
         let { width, height } = this.sys.game.canvas;
         this.createBackground(width, height);
 
-        // TODO Can probably be made singular?
+        // Perhaps name player, not pig
+        this.pigLives = 3;
+        this.pigHealthText = this.add.text(440, 40, `LIVES: ${this.pigLives}`, {fontSize: '32px', color: '#fff'});
+
         this.floor = this.physics.add.staticGroup();
         // Add ground
         this.floor.create(0, 768, 'ground').setTintFill(0x8000).setDisplaySize(2048, 200).refreshBody();
@@ -71,9 +78,10 @@ export class Game extends DayLevel {
         this.dayCloudsMid1.tilePositionX -= 0.15; // 0.3
         this.dayCloudsMid2.tilePositionX -= 0.4; // 0.75
 
-        if (this.player.x < 0) {
+        if (this.player.x < -10) { // Put all end states here?
             this.scene.start('GameOver');
         }
+
         this.playerDirection();
         this.snatcherDirection();
     }
@@ -87,7 +95,6 @@ export class Game extends DayLevel {
             }
             else if (this.cursors?.right.isDown && this.isPlayerWalkable)
             {
-                //this.player.goRight(); // change hitbox
                 this.player.play('right', true);
                 this.player.setVelocityX(160);
             }
@@ -99,7 +106,6 @@ export class Game extends DayLevel {
             
             if (this.cursors?.up.isDown) // && this?.player?.body?.touching.down
             {
-                // TODO: Pig doesn't get away unless lucky on a corner of snatcher
                 // Pig can get away if double jump allowed
                 this.isPlayerWalkable = true;
                 // Could allow double jump if it looks more like jumping
@@ -109,13 +115,28 @@ export class Game extends DayLevel {
     }
 
     snatcherCollidesPlayer () {
-        this.isPlayerWalkable = false;
-        //this.snatcher.setSize(24, 37);
-        //this.physics.add.collider(this.snatcher, this.floor);
-        this.snatcher.stop();
-        this.snatcher.play('attack');
-        this.flashRed(this.player);
+        if (this.snatcher.body?.touching.right) {
+            this.isPlayerWalkable = false;
+            this.flashRed(this.player);
+            
+            this.pigLives -= 1;
+            this.pigHealthText.setText('LIVES: ' + this.pigLives);
+            
+            this.snatcherBounceBack();
 
+            if (this.pigLives < 0) {
+                this.scene.start('GameOver');
+            }
+        }
+    }
+
+    snatcherBounceBack () {
+        this.snatcher.setVelocityX(-256);
+        this.time.addEvent({
+            delay: 250,
+            callback: () => {this.snatcher.setVelocityX(40); this.isPlayerWalkable = true;},
+            callbackScope: this,
+        });
     }
      
     flashRed(character: Phaser.Physics.Arcade.Sprite) {
@@ -128,44 +149,16 @@ export class Game extends DayLevel {
                 character.clearTint();
             }
         });
-        /*character.setTint(0xFF0000);
-        this.time.addEvent({
-            delay: 20,
-            callback: function(){ character.clearTint(); },
-            callbackScope: this,
-            });*/
     }
 
     snatcherDirection () {
-        // Snatcher doesn't jump for now
-        const snatcherX = this.snatcher.x;
-        const playerX = this.player.x;
-
+        /*  Snatcher doesn't jump for now  */
         if (this.isPlayerWalkable) {
             this.snatcher.play('walk', true);
             this.snatcher.setVelocityX(40);
         } else {
-            //this.snatcher.setSize(24, 37);
-            //this.physics.add.collider(this.snatcher, this.floor);
-            //this.snatcher.play('attack');
+            /*  Snatcher bounces back, player loses a life  */
         }
-
-        /*
-        // If player is to the right
-        if (playerX > snatcherX && this.isPlayerWalkable) {
-            this.snatcher.play('walk', true);
-            this.snatcher.setVelocityX(40); // speed up to 100?
-        } 
-        // If player is to the left
-        else if (playerX < snatcherX) {
-            this.snatcher.setVelocityX(-40);
-        }
-        else {
-            this.snatcher.setVelocityX(-40);
-            // Snatcher tries to carry pig away
-            this.player.setVelocityX(-40);
-        }
-        */
     }
 
     sendSnatcher () {
@@ -173,7 +166,7 @@ export class Game extends DayLevel {
         this.snatcher.setVelocityX(40);
     }  
 
-    // TODO Figure out an object for this
+    // TODO Figure out an object/import for this?
     createBackground (width: number, height: number) {
         this.dayCloudsBack = this.add.tileSprite(0,
             height - this.textures.get('day-clouds-back').getSourceImage().height - 100,
