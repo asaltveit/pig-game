@@ -158,6 +158,10 @@ export class Game extends DayLevel {
 
     snatcherDirection () {
         /*  Snatcher doesn't jump for now  */
+        // Width may depend on screen size/browser
+        if (this.snatcher.x >= 985) {
+            this.scene.start('GameOver', {endState: EndStates.BrethrenDeath});
+        }
         if (this.isPlayerWalkable) {
             this.snatcher.play('walk', true);
             this.snatcher.setVelocityX(40);
