@@ -116,7 +116,11 @@ export class Game extends DayLevel {
     }
 
     snatcherCollidesPlayer () {
-        if (this.snatcher.body?.touching.right) {
+        if (this.snatcher.body?.touching.up) {
+            this.flashRed(this.snatcher);
+            this.scene.start('LevelWin');
+        }
+        else if (this.snatcher.body?.touching.right) {
             this.isPlayerWalkable = false;
             this.flashRed(this.player);
             
