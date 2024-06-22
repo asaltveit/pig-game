@@ -108,6 +108,10 @@ export class Game extends DayLevel {
 
     snatcherCollidesPlayer () {
         this.isPlayerWalkable = false;
+        //this.snatcher.setSize(24, 37);
+        //this.physics.add.collider(this.snatcher, this.floor);
+        this.snatcher.stop();
+        this.snatcher.play('attack');
     }
 
     snatcherDirection () {
@@ -115,6 +119,16 @@ export class Game extends DayLevel {
         const snatcherX = this.snatcher.x;
         const playerX = this.player.x;
 
+        if (this.isPlayerWalkable) {
+            this.snatcher.play('walk', true);
+            this.snatcher.setVelocityX(40);
+        } else {
+            //this.snatcher.setSize(24, 37);
+            //this.physics.add.collider(this.snatcher, this.floor);
+            //this.snatcher.play('attack');
+        }
+
+        /*
         // If player is to the right
         if (playerX > snatcherX && this.isPlayerWalkable) {
             this.snatcher.play('walk', true);
@@ -129,6 +143,7 @@ export class Game extends DayLevel {
             // Snatcher tries to carry pig away
             this.player.setVelocityX(-40);
         }
+        */
     }
 
     sendSnatcher () {
