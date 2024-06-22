@@ -29,7 +29,7 @@ export default class Snatcher extends Phaser.Physics.Arcade.Sprite {
             key: 'attack',
             frames: this.anims.generateFrameNumbers('skeleton-attack', { start: 0, end: 17 }),
             frameRate: 12,//16,//8,
-            repeat: -1
+            repeat: 0,
         });
 
     }

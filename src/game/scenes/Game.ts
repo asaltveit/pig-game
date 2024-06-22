@@ -2,6 +2,8 @@ import Player from '../sprites/Player';
 import Snatcher from '../sprites/Snatcher';
 import DayLevel from './DayLevel';
 
+export type ColorValueHex = `#${string}`;
+
 // TODO Game will become Level_1 in the future
 export class Game extends DayLevel {
     /* 
@@ -112,6 +114,26 @@ export class Game extends DayLevel {
         //this.physics.add.collider(this.snatcher, this.floor);
         this.snatcher.stop();
         this.snatcher.play('attack');
+        this.flashRed(this.player);
+
+    }
+     
+    flashRed(character: Phaser.Physics.Arcade.Sprite) {
+        this.tweens.add({
+            targets: character,
+            duration: 50,
+            tint: 0xff0000,
+            callbackScope: this,
+            onComplete: function(tween, sprites) {
+                character.clearTint();
+            }
+        });
+        /*character.setTint(0xFF0000);
+        this.time.addEvent({
+            delay: 20,
+            callback: function(){ character.clearTint(); },
+            callbackScope: this,
+            });*/
     }
 
     snatcherDirection () {
