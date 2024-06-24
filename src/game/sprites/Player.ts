@@ -13,7 +13,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         
         this.setScale(0.3);
         // Set hit box - works when facing left
-        this.setSize(350, 200).setOffset(400, 130);
+        this.setSize(300, 200).setOffset(450, 130);
         // .setOffset(250, 130); works when facing right
 
         this.anims.create({

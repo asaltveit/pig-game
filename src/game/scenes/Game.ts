@@ -20,6 +20,9 @@ export class Game extends DayLevel {
     pigLives: number;
     pigHealthText: Phaser.GameObjects.Text;
 
+    snatcherLives: number;
+    snatcherHealthText: Phaser.GameObjects.Text;
+
     /* Inherited vars
     floor: Phaser.Physics.Arcade.StaticGroup;
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -48,7 +51,7 @@ export class Game extends DayLevel {
 
         // Perhaps name player, not pig
         this.pigLives = 3;
-        this.pigHealthText = this.add.text(440, 40, `LIVES: ${this.pigLives}`, {fontSize: '32px', color: '#fff'});
+        this.pigHealthText = this.add.text(350, 40, `Lives:${this.pigLives}`, {fontSize: '32px', color: '#fff'});
 
         this.floor = this.physics.add.staticGroup();
         // Add ground
@@ -65,6 +68,8 @@ export class Game extends DayLevel {
 
         // Snatcher starts on left side of screen
         this.snatcher = this.physics.add.existing(new Snatcher(this, 50, 550)); //.setDisplaySize(10, 200);
+        this.snatcherLives = 1;
+        this.snatcherHealthText = this.add.text(500, 40, `Snatchers:${this.snatcherLives}`, {fontSize: '32px', color: '#fff'});
 
         // Snatcher doesn't fall through the floor
         this.physics.add.collider(this.snatcher, this.floor);
@@ -94,7 +99,7 @@ export class Game extends DayLevel {
                 // Flip X instead of manually flipping sprite sheet
                 this.player.setFlipX(true);
                 // Set hit box
-                this.player.setOffset(400, 130);
+                this.player.setOffset(450, 130);
                 this.player.play('walk', true);
                 this.player.setVelocityX(-160);
             }
@@ -125,14 +130,17 @@ export class Game extends DayLevel {
     snatcherCollidesPlayer () {
         if (this.snatcher.body?.touching.up) {
             this.flashRed(this.snatcher);
-            this.scene.start('LevelWin');
+            this.playerBounceUp();
+            this.snatcherLives -= 1;
+            this.pigHealthText.setText('LIVES:' + this.snatcherLives);
+            this.time.delayedCall(300, () => this.scene.start('LevelWin'), undefined, this);
         }
         else if (this.snatcher.body?.touching.right) {
             this.isPlayerWalkable = false;
             this.flashRed(this.player);
             
             this.pigLives -= 1;
-            this.pigHealthText.setText('LIVES: ' + this.pigLives);
+            this.pigHealthText.setText('LIVES:' + this.pigLives);
             
             this.snatcherBounceBack();
 
@@ -150,11 +158,20 @@ export class Game extends DayLevel {
             callbackScope: this,
         });
     }
+
+    playerBounceUp () {
+        this.player.setVelocityY(-200);
+        this.time.addEvent({
+            delay: 250,
+            callback: () => {this.player.setVelocityY(0);},
+            callbackScope: this,
+        });
+    }
      
     flashRed(character: Phaser.Physics.Arcade.Sprite) {
         this.tweens.add({
             targets: character,
-            duration: 50,
+            duration: 50,//90,//50,
             tint: 0xff0000,
             callbackScope: this,
             onComplete: function(tween, sprites) {
