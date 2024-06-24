@@ -6,17 +6,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // need to protect against bad names?
     
     constructor (scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 'pig-left', 'output-onlinepngtools.png');
+        super(scene, x, y, 'pig-left', 'output-onlinepngtools.png'); // 'pig-left', 'output-onlinepngtools.png'
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
         
         this.setScale(0.3);
-        this.setSize(350, 200).setOffset(250, 130); //only works to the right
-        //this.setSize(350, 200).setOffset(400, 130);
+        // Set hit box - works when facing left
+        this.setSize(350, 200).setOffset(400, 130);
+        // .setOffset(250, 130); works when facing right
 
         this.anims.create({
-            key: 'right',
+            key: 'walk',
             frames: [
                 { key: 'pig-right', frame: 'Pig.psd-2.png' },
                 { key: 'pig-right', frame: 'Pig.psd.png' },
@@ -26,6 +27,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             repeat: -1
         });
 
+        /* Images were flipped manually
         this.anims.create({
             key: 'left',
             frames: [
@@ -35,7 +37,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             ],
             frameRate: 4,
             repeat: -1
-        });
+        });*/
 
         this.setBounce(0.35);
         this.setCollideWorldBounds(true);

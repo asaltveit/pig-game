@@ -91,12 +91,19 @@ export class Game extends DayLevel {
         this.cursors = this.input.keyboard?.createCursorKeys();
         if (this.cursors?.left.isDown && this.isPlayerWalkable)
             {
-                this.player.play('left', true);
+                // Flip X instead of manually flipping sprite sheet
+                this.player.setFlipX(true);
+                // Set hit box
+                this.player.setOffset(400, 130);
+                this.player.play('walk', true);
                 this.player.setVelocityX(-160);
             }
             else if (this.cursors?.right.isDown && this.isPlayerWalkable)
             {
-                this.player.play('right', true);
+                this.player.setFlipX(false);
+                // Set hitbox
+                this.player.setOffset(250, 130);
+                this.player.play('walk', true);
                 this.player.setVelocityX(160);
             }
             else
