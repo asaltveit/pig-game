@@ -6,7 +6,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // need to protect against bad names?
     
     constructor (scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 'pig-left', 'output-onlinepngtools.png'); // 'pig-left', 'output-onlinepngtools.png'
+        super(scene, x, y, 'pig-left', 'output-onlinepngtools.png');
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -61,15 +61,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             should I add the platforms to set bounds on?
             Includes what it looks like
 
-
         */
     }
-
-    goLeft () {
-        this.setOffset(400, 130);
-    }
-
-    goRight () {
-        this.setSize(350, 200).setOffset(250, 130);
-    }
 }
+

@@ -1,10 +1,11 @@
+import { characterBounceBack, characterBounceUp, flashRed } from '../sprites/HelperFunctions';
 import Player from '../sprites/Player';
 import Snatcher from '../sprites/Snatcher';
 import DayLevel from './DayLevel';
 import { EndStates } from './GameOver';
 
 // TODO Game will become Level_1 in the future
-export class Game extends DayLevel {
+export class Level2 extends DayLevel {
     /* 
         How much does it really help to have the vars defined beforehand?
         Would the preload() work?
@@ -34,7 +35,7 @@ export class Game extends DayLevel {
 
     constructor ()
     {
-        super('Game');
+        super('Level2');
     }
 
     create ()
@@ -129,20 +130,21 @@ export class Game extends DayLevel {
 
     snatcherCollidesPlayer () {
         if (this.snatcher.body?.touching.up) {
-            this.flashRed(this.snatcher);
-            this.playerBounceUp();
+            flashRed(this.snatcher, this);
+            characterBounceUp(this.player, this);
             this.snatcherLives -= 1;
             this.pigHealthText.setText('LIVES:' + this.snatcherLives);
             this.time.delayedCall(300, () => this.scene.start('LevelWin'), undefined, this);
         }
         else if (this.snatcher.body?.touching.right) {
             this.isPlayerWalkable = false;
-            this.flashRed(this.player);
+            flashRed(this.player, this);
             
             this.pigLives -= 1;
             this.pigHealthText.setText('LIVES:' + this.pigLives);
             
-            this.snatcherBounceBack();
+            characterBounceBack(this.snatcher, this);
+            this.isPlayerWalkable = true;
 
             if (this.pigLives < 1) {
                 this.scene.start('GameOver', {endState: EndStates.PlayerDeath});
@@ -158,28 +160,7 @@ export class Game extends DayLevel {
             callbackScope: this,
         });
     }
-
-    playerBounceUp () {
-        this.player.setVelocityY(-200);
-        this.time.addEvent({
-            delay: 250,
-            callback: () => {this.player.setVelocityY(0);},
-            callbackScope: this,
-        });
-    }
-     
-    flashRed(character: Phaser.Physics.Arcade.Sprite) {
-        this.tweens.add({
-            targets: character,
-            duration: 50,
-            tint: 0xff0000,
-            callbackScope: this,
-            onComplete: function(tween, sprites) {
-                character.clearTint();
-            }
-        });
-    }
-
+ 
     snatcherDirection () {
         /*  Snatcher doesn't jump for now  */
         // Width may depend on screen size/browser
