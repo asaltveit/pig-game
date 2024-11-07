@@ -18,9 +18,11 @@ jobs:
         # will not occur.
         - name: Dependabot metadata
           id: dependabot-metadata
-          uses: dependabot/fetch-metadata@v1.1.1
+          uses: dependabot/fetch-metadata@v2
           with:
-            github-token: "${{ secrets.GITHUB_TOKEN }}"
+            # populates the alert-state, ghsa-id and cvss outputs
+            alert-lookup: true
+            github-token: "${{ secrets.PAT }}"
         # Here the PR gets approved.
         - name: Approve a PR
           if: ${{ steps.dependabot-metadata.outputs.update-type != 'version-update:semver-major' }}
