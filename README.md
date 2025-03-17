@@ -26,8 +26,8 @@ Use right arrow key to move right, left arrow key to move left, and up arrow key
 ## Why I built it this way
 - Built it in Phaser3, since I was comfortable with JavaScript and wanted a web game.
 - Included React because I was expecting to use the game directly with a website. But my time was focused on the game, so I didn’t end up using this.
-- All free assets as placeholders.
-- Created the animations for the pig myself.
+- I used all free assets as placeholders so that I could focus on functionality.
+- I started to explore creating my own animations, by creating the pig's walking animation.
 
 
 ## Requirements
