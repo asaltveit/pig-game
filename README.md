@@ -2,7 +2,7 @@
 
 You’re a pig that has to defend your fellow pigs from attackers. You were bestowed with special powers from some aliens. Y’all are considered the most delicious in the world, so your enemies come from far and wide.
 
-A 2D slide-scroller game in Phaser3, TypeScript, and React.
+A 2D slide-scroller game developed in Phaser3, TypeScript, and React.
 
 Inspired by:
 - [Iron Snout](https://poki.com/en/g/iron-snout?campaign=14726801018&adgroup=126978536149&extensionid=&targetid=kwd-325691565324&location=9031955&matchtype=e&network=g&device=c&devicemodel=&creative=669862134909&keyword=iron%20snout&placement=&target=&gad_source=1&gclid=Cj0KCQjw7dm-BhCoARIsALFk4v8DSTRXyFg3l8Wk7GzfVd8xaL5UcQfqSDrErsv-1YI6Cc_v6UyXSAUaAow3EALw_wcB)
