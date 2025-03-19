@@ -8,6 +8,8 @@ Inspired by:
 - [Iron Snout](https://poki.com/en/g/iron-snout?campaign=14726801018&adgroup=126978536149&extensionid=&targetid=kwd-325691565324&location=9031955&matchtype=e&network=g&device=c&devicemodel=&creative=669862134909&keyword=iron%20snout&placement=&target=&gad_source=1&gclid=Cj0KCQjw7dm-BhCoARIsALFk4v8DSTRXyFg3l8Wk7GzfVd8xaL5UcQfqSDrErsv-1YI6Cc_v6UyXSAUaAow3EALw_wcB)
 - [Pig Farm Mix](https://play.google.com/store/apps/details?id=jp.j_o_e.NewPigEn&hl=en_US&pli=1)
 
+There is now a version of this game getting developed in Godot: [hero-pig](https://github.com/asaltveit/hero-pig)
+
 ## Current Version
 
 Start menu:
